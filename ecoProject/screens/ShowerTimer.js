@@ -1,14 +1,38 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import ShowerTimer from './ShowerTimer.js'
-
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
   return (
-    <ShowerTimer />
+    <View style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <View style={styles.welcomeContainer}>
+        <Image
+            source = {require('../assets/images/raindrop.png')}
+            style={styles.welcomeImageRain}
+          />
+          <Image
+            source = {require('../assets/images/fish-button.png')}
+            style={styles.welcomeImageFish}
+          />
+        </View>
+
+        <View style={styles.getStartedContainer}>
+
+          <Text style={styles.averageInfo}>You are down __% from your daily average. </Text>
+
+          <Text style={styles.gallonInfo}>
+            Gallons of Water Saved: 25
+          </Text>
+
+          <Text style={styles.timerInfo}> 30:00 </Text>
+        </View>
+
+      </ScrollView>
+
+    </View>
   );
 }
 
@@ -16,43 +40,11 @@ HomeScreen.navigationOptions = {
   header: null,
 };
 
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    );
-
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use useful development
-        tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
-    );
-  }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/workflow/development-mode/');
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/get-started/create-a-new-app/#making-your-first-change'
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#8bd0e6',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -69,9 +61,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
+  welcomeImageRain: {
+    width: 120,
+    height: 90,
+    resizeMode: 'contain',
+    marginTop: 3,
+    marginLeft: -10,
+  },
+  welcomeImageFish: {
+    width: 300,
+    height: 240,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
@@ -91,11 +90,26 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingHorizontal: 4,
   },
-  getStartedText: {
+  averageInfo: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: 'rgb(0, 0, 0)',
     lineHeight: 24,
     textAlign: 'center',
+    padding: 5,
+  },
+  gallonInfo: {
+    fontSize: 20,
+    color: 'rgb(0, 0, 0)',
+    lineHeight: 24,
+    textAlign: 'center',
+    padding: 5,
+  },
+  timerInfo: {
+    fontSize: 40,
+    color: 'rgb(0, 0, 0)',
+    lineHeight: 45,
+    textAlign: 'center',
+    padding: 5,
   },
   tabBarInfoContainer: {
     position: 'absolute',
