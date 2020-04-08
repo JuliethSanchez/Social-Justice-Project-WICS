@@ -43,24 +43,27 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <Text style={styles.timerText}>{`${mins}:${secs}`}</Text>
-      <TouchableOpacity onPress={this.toggle} style={styles.button}>
-          <Text style={styles.buttonText}>{isActive ? 'Pause' : 'Start'}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={this.reset} style={[styles.buttonReset, styles.buttonRest]}>
-        <Text style={[styles.buttonText, styles.buttonTextRest]}>Reset</Text>
-      </TouchableOpacity>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-        <Image
+      <Image
             source = {require('../assets/images/raindrop.png')}
             style={styles.welcomeImageRain}
           />
+      <TouchableOpacity onPress={toggle} style={styles.button}>
+      <View style={styles.absoluteView}>
+          <Text style={styles.buttonText}>{isActive ? 'Pause' : 'Start'}</Text>
+          </View>
+          <Image source={require('../assets/images/fish-button.png')}  style={styles.welcomeImageFish}/>
+      </TouchableOpacity>
+      <Text style={styles.timerText}>{`${mins}:${secs}`}</Text>
+      <TouchableOpacity onPress={reset} style={[styles.buttonReset, styles.buttonRest]}>
+        <Text style={[styles.buttonText, styles.buttonTextRest]}>Reset</Text>
+      </TouchableOpacity>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+{/*         <View style={styles.welcomeContainer}>
           <Image //Commented out for now until figure out how to animate it
     //        source = {require('../assets/images/fish-button.png')}
     //        style={styles.welcomeImageFish}
           />
-        </View>
+        </View> */}
 
         <View style={styles.getStartedContainer}>
 
@@ -84,12 +87,20 @@ HomeScreen.navigationOptions = {
 
 
 const styles = StyleSheet.create({
+  absoluteView: {
+    flex: 1,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+},
   container: {
     flex: 1,
-    backgroundColor: '#8bd0e6',
+    backgroundColor: '#b7e4f7',
   },
   button: {
-    borderWidth: 10,
+    marginTop: 30,
+    marginLeft: 100,
     borderColor: '#1fa4ad',
     width: screen.width / 2,
     height: screen.width / 2,
@@ -99,12 +110,13 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 45,
-    color: '#B9AAFF'
+    color: '#f7cbb7'
   },
   timerText: {
-    color: '#B9AAFF',
-    fontSize: 90,
-    marginBottom: 20
+    marginTop: 30,
+    marginLeft: 80,
+    color: '#f7bbb7',
+    fontSize: 90
   },
   buttonRest: {
     marginTop: 10,
@@ -132,13 +144,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImageRain: {
-    width: 120,
-    height: 90,
+    width: 130,
+    height: 100,
     resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-    textAlign: 'center',
-    textAlignVertical: 'top'
+    marginTop: 30,
+    marginLeft: 140
   },
   welcomeImageFish: {
     width: 300,
