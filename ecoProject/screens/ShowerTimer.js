@@ -1,33 +1,75 @@
 import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+//import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import { StatusBar, TouchableOpacity, Dimensions, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MonoText } from '../components/StyledText';
 
+const screen = Dimensions.get('window');
+const formatNumber = number => `0${number}`.slice(-2);
+
+const getRemaining = (time) => {
+  const mins = Math.floor(time / 60);
+  const secs = time - mins * 60;
+  return { mins: formatNumber(mins), secs: formatNumber(secs)};
+}
+
 export default function HomeScreen() {
+  const [remainingSecs, setRemainingSecs] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const { mins, secs } = getRemaining(remainingSecs);
+
+  toggle = () => {
+    setIsActive(!isActive);
+  }
+
+  reset = () => {
+    setRemainingSecs(0);
+    setIsActive(false);
+  }
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setRemainingSecs(remainingSecs => remainingSecs + 1);
+      }, 1000);
+    } else if (!isActive && remainingSecs !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, remainingSecs]);
+
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <Text style={styles.timerText}>{`${mins}:${secs}`}</Text>
+      <TouchableOpacity onPress={this.toggle} style={styles.button}>
+          <Text style={styles.buttonText}>{isActive ? 'Pause' : 'Start'}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={this.reset} style={[styles.buttonReset, styles.buttonRest]}>
+        <Text style={[styles.buttonText, styles.buttonTextRest]}>Reset</Text>
+      </TouchableOpacity>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
         <Image
             source = {require('../assets/images/raindrop.png')}
             style={styles.welcomeImageRain}
           />
-          <Image
-            source = {require('../assets/images/fish-button.png')}
-            style={styles.welcomeImageFish}
+          <Image //Commented out for now until figure out how to animate it
+    //        source = {require('../assets/images/fish-button.png')}
+    //        style={styles.welcomeImageFish}
           />
         </View>
 
         <View style={styles.getStartedContainer}>
 
-          <Text style={styles.averageInfo}>You are down __% from your daily average. </Text>
+          <Text style={styles.averageInfo}>You are down_____% from your daily average. </Text>
 
           <Text style={styles.gallonInfo}>
             Gallons of Water Saved: 25
           </Text>
 
-          <Text style={styles.timerInfo}> 30:00 </Text>
         </View>
 
       </ScrollView>
@@ -45,6 +87,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#8bd0e6',
+  },
+  button: {
+    borderWidth: 10,
+    borderColor: '#1fa4ad',
+    width: screen.width / 2,
+    height: screen.width / 2,
+    borderRadius: screen.width / 2,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  buttonText: {
+    fontSize: 45,
+    color: '#B9AAFF'
+  },
+  timerText: {
+    color: '#B9AAFF',
+    fontSize: 90,
+    marginBottom: 20
+  },
+  buttonRest: {
+    marginTop: 10,
+    borderColor: "#1fa4ad",
+    alignItems: 'center'
+  },
+  buttonTextRest: {
+    color: '#fff',
+    fontSize: 30,
+    marginBottom: 20,
   },
   developmentModeText: {
     marginBottom: 20,
@@ -67,6 +137,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
+    textAlign: 'center',
+    textAlignVertical: 'top'
   },
   welcomeImageFish: {
     width: 300,
@@ -96,6 +168,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
     padding: 5,
+    textAlignVertical: 'center'
   },
   gallonInfo: {
     fontSize: 20,
