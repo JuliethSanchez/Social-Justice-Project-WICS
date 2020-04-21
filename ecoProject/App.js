@@ -1,36 +1,42 @@
-import React, { Component, useState } from 'react';
+import * as React from 'react';
 import { View, Text, Image, TextInput, CheckBox, Button } from 'react-native';
 
-
-function passwordCheck(var1,var2){ 
- if(var1==var2)
-  return (var1);
-else {return (
-<Text>"Passwords don't match!"</Text>
-);
-}}
-
-export class user {
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  constructor(props){
-    this.state = {email:"", firstName:"", lastName:"", password:""}
-  }
-}
-
-export default function PageLayout() {
-  const [Txtinput, setTxtinput] = useState('');
-  var [Email, setEmail] = useState('');
   const text = 'Welcome';
-  var email;
-  var firstName = '';
-  var lastName = '';
-  var pass1 = '';
-  var pass2 = '';
-  var password = '';
-   
+  const warntext = 'Passwords do not match'
+  
+export default class PageLayout extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {email:"", firstName: "", lastName:"", password:"", pass1:"",        pass2: "",}
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
+    this.handleLastNameChange = this.handleLastNameChange.bind(this);
+    this.handlePass1Change = this.handlePass1Change.bind(this);
+    this.handlePass2Change = this.handlePass2Change.bind(this);
+    this.handlepasswordChange = this.handlepasswordChange.bind(this);
+    this.registerUser=this.registerUser.bind(this);
+  }
+  
+  handleEmailChange=(email)=>{this.setState({email})}
+  handleFirstNameChange=(firstName)=>{this.setState({firstName})}
+  handleLastNameChange=(lastName)=>{this.setState({lastName})}
+  handlePass1Change=(pass1)=>{this.setState({pass1})}
+  handlePass2Change=(pass2)=>{this.setState({pass2})}
+  handlepasswordChange=(pass1, pass2, password)=>{
+    if (pass1!=pass2) return (<Text
+          style={[
+            text.style,
+          
+          ]}>
+          {warntext}
+        </Text>);
+    else this.setState({password: pass1})}
+    
+    registerUser = () => {
+    this.handlepasswordChange
+    return "{email} + {firstName} + {LastName} + {Password}";}
+
+  render(){
   return (
     
     <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -45,7 +51,6 @@ export default function PageLayout() {
         <Text
           style={[
             text.style,
-            { fontFamily: 'space-mono', color: 'white', fontSize: 31 },
           ]}>
           {text}
         </Text>
@@ -59,7 +64,7 @@ export default function PageLayout() {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Image source={require('logo.jpg')} style={{ height: 90, width: 90 }} />
+        <Image source={require('./assets/logo.jpg')} style={{ height: 90, width: 90 }} />
       </View>
 
       <View
@@ -79,8 +84,9 @@ export default function PageLayout() {
             backgroundColor: 'grey',
             borderWidth: 2,
           }}
+          value = {this.state.email}
           placeholder=" Email Adress"
-          onChangeText={Txtinput => setTxtinput(Txtinput)}
+          onChangeText={this.handleEmailChange}
           defaultValue={this.Txtinput}
         />
         
@@ -95,9 +101,8 @@ export default function PageLayout() {
             borderWidth: 2,
           }}
           placeholder=" First Name"
-          onChangeText={Txtinput => setTxtinput(Txtinput)}
+          onChangeText={this.handleFirstNameChange}
           defaultValue={this.Txtinput}
-          firstName = {this.Txtinput}
         />
 
         <TextInput
@@ -110,9 +115,8 @@ export default function PageLayout() {
             borderWidth: 2,
           }}
           placeholder=" Last Name"
-          onChangeText={Txtinput => setTxtinput(Txtinput)}
+          onChangeText={this.handleLastNameChange}
           defaultValue={this.Txtinput}
-          lastName = {this.Txtinput}
         />
         <TextInput
           style={{
@@ -124,9 +128,9 @@ export default function PageLayout() {
             borderWidth: 2,
           }}
           placeholder=" Password"
-          onChangeText={Txtinput => setTxtinput(Txtinput)}
+          onChangeText={this.handlePass1Change}
           defaultValue={this.Txtinput}
-          pass1 = {this.Txtinput}
+          
         />
         <TextInput
           style={{
@@ -138,14 +142,14 @@ export default function PageLayout() {
             borderWidth: 2,
           }}
           placeholder=" Confirm Password"
-          onChangeText={Txtinput => setTxtinput(Txtinput)}
+          onChangeText={this.handlePass2Change}
           defaultValue={this.Txtinput}
-          pass2 = {this.Txtinput}
-          password= {passwordCheck({pass1},{pass2})}
+          //pass2 = {this.Txtinput}
+          //password= {passwordCheck({pass1},{pass2})}
         />
       </View>
 
-      <View style={{ flex: 3, backgroundColor: 'limegreen', justifyContent:'space-evenly',alignItems:'center',}} >
+      <View style={{ flex: 3, backgroundColor: 'limegreen',           justifyContent:'space-evenly',alignItems:'center',}} >
       <View style={{ flexDirection: 'row' }}>
       <CheckBox
       
@@ -153,12 +157,12 @@ export default function PageLayout() {
     <Text style={{marginTop: 5}}> Remember me!</Text>
     </View>
     <Button
-    //onPress={}
+    onPress={() => this.registerUser()}
     title="Submit"
     color="#4b0082"
     
 />
       </View>
    </View>
-  );
+  );}
 }
