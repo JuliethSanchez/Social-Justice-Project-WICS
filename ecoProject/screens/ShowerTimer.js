@@ -13,12 +13,18 @@ const getRemaining = (time) => {
   const secs = time - mins * 60;
   return { mins: formatNumber(mins), secs: formatNumber(secs)};
 }
+const getGallons = (time) => {
+  const average_gpm = 2.1;
+  const total_time = time/60;
+  const gallons = Math.round(10 * average_gpm * total_time)/10;
+  return {gallons};
+}
 
 export default function HomeScreen() {
   const [remainingSecs, setRemainingSecs] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const { mins, secs } = getRemaining(remainingSecs);
-
+  const {gallons} = getGallons(remainingSecs);
   toggle = () => {
     setIsActive(!isActive);
   }
@@ -66,13 +72,9 @@ export default function HomeScreen() {
         </View> */}
 
         <View style={styles.getStartedContainer}>
-
+        
+         <Text style={styles.gallonInfo}> {(remainingSecs == '0') ? 'Click the timer up above when you begin your shower to keep track of how much water you\'re using!' : 'You used ' + `${gallons}` + ' gallons of water in the shower today '  } </Text>
           <Text style={styles.averageInfo}>You are down_____% from your daily average. </Text>
-
-          <Text style={styles.gallonInfo}>
-            Gallons of Water Saved: 25
-          </Text>
-
         </View>
 
       </ScrollView>
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
   buttonTextRest: {
     color: '#fff',
     fontSize: 30,
-    marginBottom: 20,
+    marginBottom: 0,
   },
   developmentModeText: {
     marginBottom: 20,
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
     color: 'rgb(0, 0, 0)',
     lineHeight: 24,
     textAlign: 'center',
-    padding: 5,
+    padding: 1,
     textAlignVertical: 'center'
   },
   gallonInfo: {
